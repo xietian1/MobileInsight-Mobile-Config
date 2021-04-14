@@ -1,12 +1,3 @@
-#!/usr/bin/python
-# Filename: main.mi2app
-
-"""
-Cellular event logging main app
-
-Author: Zengwen Yuan
-"""
-
 import os
 import sys
 import shutil
@@ -29,6 +20,8 @@ lte_lvl1 = [
     'LTE_NAS_EMM_State',
     'LTE_NAS_EMM_OTA_Incoming_Packet',
     'LTE_NAS_EMM_OTA_Outgoing_Packet',
+    'LTE_MAC_UL_Transport_Block',
+    'LTE_MAC_DL_Transport_Block',
     'LTE_PDCP_DL_Cipher_Data_PDU',
     'LTE_PDCP_DL_Config',
     'LTE_PDCP_DL_Ctrl_PDU',
@@ -87,8 +80,8 @@ try:
     elif plugin_config["log_type"] == "LTE/3G Control Plane":
         src.enable_log(lte_lvl1 + wcdma + umts)
     elif plugin_config["log_type"] == "All":
-        # src.enable_log(lte_lvl1 + lte_lvl2 + lte_lvl3 + wcdma + umts)
-        src.enable_log_all()
+        src.enable_log(lte_lvl1 + lte_lvl2)
+        #src.enable_log_all()
     elif plugin_config["log_type"] == "Read Config":
         cfg_path = os.path.join(
             mi2app_utils.get_mobileinsight_cfg_path(), cfg_file)
