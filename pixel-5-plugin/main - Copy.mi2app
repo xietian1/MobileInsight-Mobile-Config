@@ -1,0 +1,64 @@
+# main.mi2app
+import os
+import sys
+
+from mobile_insight.monitor import OnlineMonitor
+
+# A helper utilities for mobileinsight
+import mi2app_utils
+
+
+# options of enabling logs
+
+lte_control = [
+        'LTE_RRC_OTA_Packet',
+        'LTE_NAS_ESM_OTA_Incoming_Packet',
+        'LTE_NAS_ESM_OTA_Outgoing_Packet',
+        'LTE_NAS_EMM_OTA_Incoming_Packet',
+        'LTE_NAS_EMM_OTA_Outgoing_Packet',
+        ]
+lte_data = [
+        'LTE_MAC_UL_Transport_Block',
+        'LTE_MAC_DL_Transport_Block',
+            ]
+
+all_lte = [
+        'LTE_MAC_UL_Transport_Block',
+        'LTE_MAC_DL_Transport_Block',
+		'LTE_PDCP_DL_Cipher_Data_PDU',
+		'LTE_PDCP_DL_Config',
+		'LTE_PDCP_DL_Ctrl_PDU',
+		'LTE_PDCP_DL_SRB_Integrity_Data_PDU',
+		'LTE_PDCP_DL_Stats',
+		'LTE_PDCP_UL_Cipher_Data_PDU',
+		'LTE_PDCP_UL_Config',
+		'LTE_PDCP_UL_Ctrl_PDU',
+		'LTE_PDCP_UL_Data_PDU',
+		'LTE_PDCP_UL_SRB_Integrity_Data_PDU',
+		'LTE_PDCP_UL_Stats',
+            ]
+
+			
+			
+# Initialize a 3G/4G monitor
+src = OnlineMonitor()
+
+# Configure the path of saving logs
+cache_directory  = mi2app_utils.get_cache_dir()
+log_directory    = os.path.join(cache_directory, "mi2log")
+src.set_log_directory(log_directory)
+
+
+#src.enable_log(all_lte)
+
+# Enable logs based on settings
+if plugin_config["log_type"] == "LTE Control/Data Plane":
+    src.enable_log(lte_control)
+elif plugin_config["log_type"] == "Control Plane":
+    src.enable_log(lte_control + lte_data)
+else:
+	src.enable_log(all_lte)
+
+
+#Start the monitoring
+src.run()
